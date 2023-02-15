@@ -20,6 +20,9 @@ const uuid_1 = require("uuid");
 const validateUserCreate_1 = __importDefault(require("../validateUserCreate"));
 // import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // dotenv.config()
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 let errorMessage;
 let alertMessage;
 // const apiKey = process.env.FIREBASECONFIG_APIKEY
@@ -48,9 +51,6 @@ const firebaseConfig = {
     measurementId: "G-GNJSLWTBCJ"
 };
 const firebaseApp = (0, app_1.initializeApp)(firebaseConfig);
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
-app.use((0, cors_1.default)());
 app.get('/user', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("hello");
