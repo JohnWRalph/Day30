@@ -53,6 +53,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.get('/user', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("hello");
         const database = (0, firestore_1.getFirestore)(firebaseApp);
         const docRef = yield (0, firestore_1.getDocs)((0, firestore_1.collection)(database, "users"));
         var userList = docRef.docs.map(doc => doc.data());
