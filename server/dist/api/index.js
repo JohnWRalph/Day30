@@ -18,25 +18,34 @@ const app_1 = require("firebase/app");
 const firestore_1 = require("firebase/firestore");
 const uuid_1 = require("uuid");
 const validateUserCreate_1 = __importDefault(require("../validateUserCreate"));
-const dotenv_1 = __importDefault(require("dotenv")); // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-dotenv_1.default.config();
+// import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+// dotenv.config()
 let errorMessage;
 let alertMessage;
-const apiKey = process.env.FIREBASECONFIG_APIKEY;
-const authDomain = process.env.FIREBASECONFIG_AUTHDOMAIN;
-const projectId = process.env.FIREBASECONFIG_PROJECTID;
-const storageBucket = process.env.FIREBASECONFIG_STORAGEBUCKET;
-const messageSenderId = process.env.FIREBASECONFIG_MESSAGINGSENDERID;
-const appId = process.env.FIREBASECONFIG_APPID;
-const measurementId = process.env.FIREBASECONFIG_MEASUREMENTID;
+// const apiKey = process.env.FIREBASECONFIG_APIKEY
+// const authDomain = process.env.FIREBASECONFIG_AUTHDOMAIN
+// const projectId = process.env.FIREBASECONFIG_PROJECTID
+// const storageBucket = process.env.FIREBASECONFIG_STORAGEBUCKET
+// const messageSenderId = process.env.FIREBASECONFIG_MESSAGINGSENDERID
+// const appId = process.env.FIREBASECONFIG_APPID
+// const measurementId = process.env.FIREBASECONFIG_MEASUREMENTID
+// const firebaseConfig = {
+//     apiKey,
+//     authDomain,
+//     projectId,
+//     storageBucket,
+//     messageSenderId,
+//     appId,
+//     measurementId
+// }
 const firebaseConfig = {
-    apiKey,
-    authDomain,
-    projectId,
-    storageBucket,
-    messageSenderId,
-    appId,
-    measurementId
+    apiKey: "AIzaSyDlScYuL98ie3tKlUYyh6-vX7bPg8ZNFO0",
+    authDomain: "day29-4fec3.firebaseapp.com",
+    projectId: "day29-4fec3",
+    storageBucket: "day29-4fec3.appspot.com",
+    messagingSenderId: "256472078999",
+    appId: "1:256472078999:web:5d635b12d6f83f5a8867d2",
+    measurementId: "G-GNJSLWTBCJ"
 };
 const firebaseApp = (0, app_1.initializeApp)(firebaseConfig);
 const app = (0, express_1.default)();
