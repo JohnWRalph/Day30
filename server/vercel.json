@@ -11,10 +11,10 @@
             }
         }
     ],
-    "rewrites": [
+    "routes": [
         {
-            "source": "/(.*)",
-            "destination": "dist/server/api/index.js"
+            "src": "/(.*)",
+            "dest": "dist/server/api/index.js"
         }
     ],
     "headers": [
