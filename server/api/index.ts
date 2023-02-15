@@ -8,7 +8,7 @@ import validateUserCreate from "../validateUserCreate";
 // import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // dotenv.config()
 const app = express()
-app.use(express.json())
+app.use(express.json({ limit: '50mb' }))
 app.use(cors())
 
 let errorMessage;
@@ -38,7 +38,7 @@ const firebaseConfig = {
     messagingSenderId: "256472078999",
     appId: "1:256472078999:web:5d635b12d6f83f5a8867d2",
     measurementId: "G-GNJSLWTBCJ"
-  };
+};
 const firebaseApp = initializeApp(firebaseConfig);
 
 
@@ -60,14 +60,14 @@ app.post('/user', async function (req, res) {
     const username: string = req.body.username;
     const emailAddress: string = req.body.emailAddress
     const userid: string = uuidV4()
-   
+
     // validate
     try {
         validateUserCreate(username, emailAddress, userList)
     } catch (e) {
-        
+
         errorMessage = e.message
-        
+
         res.send({
             error: e.message
         })
@@ -98,9 +98,9 @@ app.put("/user/:userId", async function (req, res) {
     try {
         validateUserCreate(newUsername, newEmailAddress, userList)
     } catch (e) {
-       
+
         errorMessage = e.message
-     
+
         res.send({
             error: e.message
         })
@@ -116,7 +116,7 @@ app.put("/user/:userId", async function (req, res) {
         user
     })
 
-    
+
 
 
     res.send(user)
