@@ -7,7 +7,9 @@ import { v4 as uuidV4 } from "uuid"
 import validateUserCreate from "../validateUserCreate";
 // import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // dotenv.config()
-
+const app = express()
+app.use(express.json())
+app.use(cors())
 
 let errorMessage;
 let alertMessage;
@@ -38,9 +40,7 @@ const firebaseConfig = {
     measurementId: "G-GNJSLWTBCJ"
   };
 const firebaseApp = initializeApp(firebaseConfig);
-const app = express()
-app.use(express.json())
-app.use(cors())
+
 
 app.get('/user', async function (req, res) {
     console.log("hello")
