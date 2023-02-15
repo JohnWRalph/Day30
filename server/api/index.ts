@@ -43,6 +43,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/user', async function (req, res) {
+    console.log("hello")
     const database = getFirestore(firebaseApp);
     const docRef = await getDocs(collection(database, "users"))
     var userList = docRef.docs.map(doc => doc.data())
