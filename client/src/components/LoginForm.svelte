@@ -7,7 +7,7 @@
     let emailAddress: string;
 
     async function submitNewUser() {
-        const result = await axios.post(" http://localhost:3000/user", {
+        const result = await axios.post("https://day29-5u37b3d7n-yahoongmi.vercel.app/user", {
             username: username,
             emailAddress: emailAddress,
         });
