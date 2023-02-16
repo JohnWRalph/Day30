@@ -11,12 +11,6 @@
             }
         }
     ],
-    "rewrite": [
-        {
-            "source": "/(.*)",
-            "dest": "dist/server/api/index.js"
-        }
-    ],
     "headers": [
         {
             "source": "/api/(.*)",
