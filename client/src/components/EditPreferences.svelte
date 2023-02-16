@@ -13,6 +13,8 @@
     let newUser;
     let preferencesbutton = true;
     async function submitNewPreferences(newUsername, newEmailAddress) {
+        console.log(newUsername)
+        console.log(newEmailAddress)
         const result = await axios.put(
             `https://day29server3-9gu64vk4h-yahoongmi.vercel.app/${$selectedUserId}`,
             {
@@ -21,7 +23,7 @@
             }
         );
         newUser = result.data;
-  
+            console.log(result.data)
         errorMessage.set(result.data.error)
       
         if ($errorMessage) {
