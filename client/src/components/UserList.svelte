@@ -11,7 +11,7 @@
     let userList = [];
     let selectedUserIndex = -1;
     async function getAllUsers() {
-        const result = await axios.get("http://localhost:3000/user", {});
+        const result = await axios.get("https://day29server3-9gu64vk4h-yahoongmi.vercel.app/user", {});
 
         userList = result.data;
     
