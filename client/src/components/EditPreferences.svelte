@@ -14,7 +14,7 @@
     let preferencesbutton = true;
     async function submitNewPreferences(newUsername, newEmailAddress) {
         const result = await axios.put(
-            `http://day29-yhy8-a45vlyh4d-yahoongmi.vercel.app/${$selectedUserId}`,
+            `https://day29-yhy8-a45vlyh4d-yahoongmi.vercel.app/${$selectedUserId}`,
             {
                 newUsername: newUsername,
                 newEmailAddress: newEmailAddress,
