@@ -9,6 +9,7 @@ import validateUserCreate from "../validateUserCreate";
 // dotenv.config()
 const app = express()
 app.use(cors())
+cors({credentials: true, origin: true})
 app.use(express.json({ limit: '50mb' }))
 
 
