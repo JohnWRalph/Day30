@@ -17,7 +17,7 @@
       
 
         const result = await axios.put(
-            `https://day29server3-9gu64vk4h-yahoongmi.vercel.app/user/${$selectedUserId}`,
+            `${import.meta.env.VITE_SERVER_URL}/user/${$selectedUserId}`,
             {
                 newUsername: newUsername,
                 newEmailAddress: newEmailAddress,

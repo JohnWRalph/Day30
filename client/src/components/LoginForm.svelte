@@ -2,15 +2,19 @@
     import axios from "axios";
     import alertMessage from "../store/alertMessage";
     import errorMessage from "../store/errorMessage";
+    import AlertMessage from "./AlertMessage.svelte";
 
     let username: string;
     let emailAddress: string;
 
     async function submitNewUser() {
-        const result = await axios.post("https://day29server3-9gu64vk4h-yahoongmi.vercel.app/user", {
+   
+        const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user`, {
+            
             username: username,
             emailAddress: emailAddress,
-        });
+        }
+        );
         if (errorMessage) {
              errorMessage.set(result.data.error)
         } 

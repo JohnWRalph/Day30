@@ -36,7 +36,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 
 app.get('/user', async function (req, res) {
-    console.log("hello")
+
     const database = getFirestore(firebaseApp);
     const docRef = await getDocs(collection(database, "users"))
     var userList = docRef.docs.map(doc => doc.data())
@@ -53,7 +53,8 @@ app.post('/user', async function (req, res) {
     const username: string = req.body.username;
     const emailAddress: string = req.body.emailAddress
     const userid: string = uuidV4()
-
+console.log(username)
+console.log(emailAddress)
     // validate
     try {
         validateUserCreate(username, emailAddress, userList)
