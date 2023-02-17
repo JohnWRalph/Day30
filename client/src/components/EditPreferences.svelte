@@ -12,18 +12,19 @@
     let newEmailAddress: string;
     let newUser;
     let preferencesbutton = true;
-    async function submitNewPreferences(newUsername, newEmailAddress) {
-        console.log(newUsername)
-        console.log(newEmailAddress)
+
+   async function submitNewPreferences(newUsername, newEmailAddress) {
+      
+
         const result = await axios.put(
-            `https://day29server3-9gu64vk4h-yahoongmi.vercel.app/${$selectedUserId}`,
+            `https://day29server3-9gu64vk4h-yahoongmi.vercel.app/user/${$selectedUserId}`,
             {
                 newUsername: newUsername,
                 newEmailAddress: newEmailAddress,
             }
         );
         newUser = result.data;
-            console.log(result.data)
+           
         errorMessage.set(result.data.error)
       
         if ($errorMessage) {
@@ -43,6 +44,7 @@
         selectedUserId.set("");
         alertMessage.set("");
     }
+
 </script>
 
 {#if $selectedUserName}
@@ -78,8 +80,10 @@
     <div id="getUsersButton" class="form-control mt-6">
         <button
             disabled={!preferencesbutton}
-            on:click={async () =>
-                await submitNewPreferences(newUsername, newEmailAddress)}
+            on:click={
+            async () =>
+                await submitNewPreferences(newUsername, newEmailAddress)
+                }
             class="btn btn-primary">Submit new Preferences</button
         >
     </div>
