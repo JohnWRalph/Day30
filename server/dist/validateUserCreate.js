@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function validateUserCreate(username, emailAddress, newPassword1, newPassword2, userList) {
     // const docRef = await getDocs(collection(database, "users"))
-    console.log(username);
+    // console.log(userList)
     // var userList = docRef.docs.map(doc => doc.data())
     if (!username) {
         throw Error("No username detected. Please enter a username");
@@ -13,7 +13,9 @@ function validateUserCreate(username, emailAddress, newPassword1, newPassword2, 
     if (username.length < 5) {
         throw Error(`Name is too short, minimum length is 5, recieved ${username.length}`);
     }
-  
+    if (userList.find(u => u.username === username)) {
+        throw Error(`Username already exists. Select a different username`);
+    }
     if (!emailAddress) {
         throw Error(`No email address detected. Please enter an email address`);
     }

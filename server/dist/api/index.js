@@ -128,13 +128,19 @@ app.post('/user', function (req, res) {
         const database = (0, firestore_1.getFirestore)(firebaseApp);
         const docRef = yield (0, firestore_1.getDocs)((0, firestore_1.collection)(database, "users"));
         var userList = docRef.docs.map(doc => doc.data());
+        const users = [];
+        userList.forEach(function (element) {
+            users.push(element.user);
+        });
+        userList = users;
+        // console.log("weewoo",userList)
         const username = req.body.username;
         const emailAddress = req.body.emailAddress;
         const userid = (0, uuid_1.v4)();
         const newPassword1 = req.body.newPassword1;
         const newPassword2 = req.body.newPassword2;
         //end ToDo
-        console.log("usre", userList);
+        // console.log("usre",userList)
         // validate
         try {
             (0, validateUserCreate_1.default)(username, emailAddress, newPassword1, newPassword2, userList);
