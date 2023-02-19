@@ -25,7 +25,7 @@ async function displayUsers() {
   </div>
 {:else}
 <div id="getUsersButton" class="form-control mt-6">
-    <button  on:click={async () => await displayUsers()} class="btn btn-primary">Back to Create User</button>
+    <button  on:click={async () => await displayUsers()} class="btn btn-primary">Back to Login Page</button>
   </div>
 {/if}
   <style global lang="postcss">

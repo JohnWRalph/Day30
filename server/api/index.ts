@@ -6,6 +6,9 @@ import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase
 import { v4 as uuidV4 } from "uuid"
 import validateUserCreate from "../validateUserCreate";
 import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import { hash, verify } from "argon2";
+import * as jwt from "jsonwebtoken"
+import validateUserLogin from "../validateUserLogin";
 dotenv.config()
 const app = express()
 app.use(cors())
@@ -34,6 +37,7 @@ const firebaseConfig = {
 }
 const firebaseApp = initializeApp(firebaseConfig);
 
+const jwtKey = process.env.JWTKEY;
 
 app.get('/user', async function (req, res) {
 
@@ -44,6 +48,59 @@ app.get('/user', async function (req, res) {
     res.send(userList)
 })
 
+
+//User verify and login
+app.post("/login", async function (req, res) {
+    // require email and password input
+    const emailAddress = req.body.emailAddress
+    const password = req.body.password
+
+    console.log(emailAddress)
+    console.log(password)
+
+    // compare req and stored hashed passwords
+    const database = getFirestore(firebaseApp);
+    const docRef = await getDocs(collection(database, "users"))
+    var userList = docRef.docs.map(doc => doc.data())
+
+    const user = userList.find(user => user.user.emailAddress === emailAddress)
+    if (!user) {
+        errorMessage = "Incorrect email/password combination";
+        res.send({ error: errorMessage })
+        return;
+    }
+    try {
+        validateUserLogin(emailAddress, password)
+    } catch (e) {
+
+        errorMessage = e.message
+
+        res.send({
+            error: e.message
+        })
+        return;
+    }
+
+    console.log("user", user)
+    // send back error if pass doesn't match OR generate JWT and send back user
+    const isPasswordcorrect = await verify(user.user.hashedPassword, password);
+    console.log(isPasswordcorrect)
+    if (!isPasswordcorrect) {
+        errorMessage = "wrong password";
+        res.send({ error: errorMessage })
+    } else {
+        const token = jwt.sign({ id: user.user.userid }, jwtKey, { expiresIn: "1800s" })
+        res.status(200).send({
+            user: user.user,
+            token: token
+        })
+    }
+
+
+})
+
+
+//user Creation
 app.post('/user', async function (req, res) {
     const database = getFirestore(firebaseApp);
     const docRef = await getDocs(collection(database, "users"))
@@ -53,11 +110,18 @@ app.post('/user', async function (req, res) {
     const username: string = req.body.username;
     const emailAddress: string = req.body.emailAddress
     const userid: string = uuidV4()
-console.log(username)
-console.log(emailAddress)
+    const newPassword1 = req.body.newPassword1
+    const newPassword2 = req.body.newPassword2
+
+
+
+
+
+    //end ToDo
+
     // validate
     try {
-        validateUserCreate(username, emailAddress, userList)
+        validateUserCreate(username, emailAddress, newPassword1, newPassword2, userList)
     } catch (e) {
 
         errorMessage = e.message
@@ -68,10 +132,14 @@ console.log(emailAddress)
         return;
     }
 
+    const hashed = await hash(newPassword1.toString())
+    console.log(hashed)
     const user: User = {
+
         userid: userid,
         username: username,
-        emailAddress: emailAddress
+        emailAddress: emailAddress,
+        hashedPassword: hashed
     }
 
     await setDoc(doc(database, "users", userid), {
@@ -80,40 +148,79 @@ console.log(emailAddress)
     res.send(user)
 })
 
+// .put lets user change their name or email
+// AUTHENTICATED ROUTE, user must have a VALID JWT signed by OUR SIGNING KEY
+// to edit this user, and the USER ID of the JWT must be the user they are TRYING TO EDIT
+// they cannot use ANY signed JWT key
 app.put("/user/:userId", async function (req, res) {
     const userId = req.params.userId;
-    const newUsername = req.body.newUsername;
-    const newEmailAddress = req.body.newEmailAddress
-    const database = getFirestore(firebaseApp);
-    const docRef = await getDocs(collection(database, "users"))
-    var userList = docRef.docs.map(doc => doc.data())
-    let successMessage: string;
-
-    try {
-        validateUserCreate(newUsername, newEmailAddress, userList)
-    } catch (e) {
-
-        errorMessage = e.message
-
-        res.send({
-            error: e.message
-        })
-        return;
-    }
-    const user: User = {
-        userid: userId,
-        username: newUsername,
-        emailAddress: newEmailAddress
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+        return res.status(400).send({ error: "no auth header" })
     }
 
-    await setDoc(doc(database, "users", userId), {
-        user
+    // Bearer 
+    console.log("auth", authHeader)
+    const token = authHeader.split(" ")[1];
+    console.log("token:", token.toString())
+    console.log("jwt", jwtKey)
+    if (!token) {
+        return res.status(400).send({ error: "no token in auth header" });
+    }
+    jwt.verify(token, jwtKey, async function (err, decodedUser: { id: string }) {
+        if (err) {
+
+            errorMessage = "invalid token";
+            return res.send({ error: errorMessage })
+        }
+        if (decodedUser.id !== userId) {
+            console.log("decoded", decodedUser)
+            console.log("id", decodedUser.id)
+            console.log("userid", userId)
+            errorMessage = "Not authorized user. Must be signed in to an account to change preferences";
+            return res.send({ error: errorMessage })
+        } else {
+            const newUsername = req.body.newUsername;
+            const newEmailAddress = req.body.newEmailAddress
+            const database = getFirestore(firebaseApp);
+            const docRef = await getDocs(collection(database, "users"))
+            var userList = docRef.docs.map(doc => doc.data())
+            
+
+            // try {
+            //     validateUserCreate(newUsername, newEmailAddress, userList)
+            // } catch (e) {
+
+            //     errorMessage = e.message
+
+            //     res.send({
+            //         error: e.message
+            //     })
+            //     return;
+            // }
+            const user = {
+                userid: userId,
+                username: newUsername,
+                emailAddress: newEmailAddress
+            }
+            console.log("newuser", user)
+            await setDoc(doc(database, "users", userId), {
+                user
+            })
+
+
+
+alertMessage = "Preferences Updated"
+            res.send(user)
+        }
+
+
+
     })
 
 
 
 
-    res.send(user)
 })
 
 app.listen(3000)

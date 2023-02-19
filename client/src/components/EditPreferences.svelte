@@ -7,33 +7,37 @@
     import axios from "axios";
     import alertMessage from "../store/alertMessage";
     import errorMessage from "../store/errorMessage";
+    import loginToken from "../store/loginToken";
 
     let newUsername: string;
     let newEmailAddress: string;
     let newUser;
     let preferencesbutton = true;
 
-   async function submitNewPreferences(newUsername, newEmailAddress) {
-      
+    async function submitNewPreferences(newUsername, newEmailAddress) {
+        console.log("login", loginToken);
 
         const result = await axios.put(
             `${import.meta.env.VITE_SERVER_URL}/user/${$selectedUserId}`,
             {
                 newUsername: newUsername,
                 newEmailAddress: newEmailAddress,
+            },
+            {
+                headers: { Authorization: "Bearer " + $loginToken },
             }
         );
         newUser = result.data;
-           
-        errorMessage.set(result.data.error)
-      
-        if ($errorMessage) {
-            errorMessage.set(result.data.error);
-            return;
-        } else {
-         
+        console.log(result);
+        if (
+            newUser.username === newUsername ||
+            newUser.emailAddress === newEmailAddress
+        ) {
             alertMessage.set("Preferences updated!");
             preferencesbutton = false;
+            return;
+        } else {
+            errorMessage.set(result.data.error);
             return;
         }
     }
@@ -44,7 +48,6 @@
         selectedUserId.set("");
         alertMessage.set("");
     }
-
 </script>
 
 {#if $selectedUserName}
@@ -80,10 +83,8 @@
     <div id="getUsersButton" class="form-control mt-6">
         <button
             disabled={!preferencesbutton}
-            on:click={
-            async () =>
-                await submitNewPreferences(newUsername, newEmailAddress)
-                }
+            on:click={async () =>
+                await submitNewPreferences(newUsername, newEmailAddress)}
             class="btn btn-primary">Submit new Preferences</button
         >
     </div>

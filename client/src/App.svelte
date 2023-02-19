@@ -21,11 +21,10 @@ import Navbar from './components/Navbar.svelte';
 <main>
 <Navbar/>
 <br>
-{#if $errorMessage}
+
 <ErrorMessage/>
-{:else if $alertMessage}
+
 <AlertMessage/>
-{/if}
 
 <DisplayUsers/>
 <br>
