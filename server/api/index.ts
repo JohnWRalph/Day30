@@ -104,9 +104,15 @@ app.post("/login", async function (req, res) {
 app.post('/user', async function (req, res) {
     const database = getFirestore(firebaseApp);
     const docRef = await getDocs(collection(database, "users"))
+    
     var userList = docRef.docs.map(doc => doc.data())
+    const users = [];
+userList.forEach(function(element) {
+    users.push(element.user)
+})
 
-
+userList = users;
+// console.log("weewoo",userList)
     const username: string = req.body.username;
     const emailAddress: string = req.body.emailAddress
     const userid: string = uuidV4()
@@ -118,7 +124,7 @@ app.post('/user', async function (req, res) {
 
 
     //end ToDo
-console.log("usre",userList)
+// console.log("usre",userList)
     // validate
     try {
         validateUserCreate(username, emailAddress, newPassword1, newPassword2, userList)
