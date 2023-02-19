@@ -89,7 +89,7 @@ app.post("/login", async function (req, res) {
         errorMessage = "wrong password";
         res.send({ error: errorMessage })
     } else {
-        const token = jwt.sign({ id: user.user.userid }, jwtKey, { expiresIn: "1800s" })
+        const token = await jwt.sign({ id: user.user.userid }, jwtKey, { expiresIn: "1800s" })
         res.status(200).send({
             user: user.user,
             token: token

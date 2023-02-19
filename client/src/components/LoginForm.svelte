@@ -28,7 +28,7 @@
             }
         );
 
-        if ($errorMessage) {
+        if (result.data.error) {
             console.log("heyyyy12");
             errorMessage.set(result.data.error);
             return;
