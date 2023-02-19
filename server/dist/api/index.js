@@ -114,7 +114,7 @@ app.post("/login", function (req, res) {
             res.send({ error: errorMessage });
         }
         else {
-            const token = jwt.sign({ id: user.user.userid }, jwtKey, { expiresIn: "1800s" });
+            const token = yield jwt.sign({ id: user.user.userid }, jwtKey, { expiresIn: "1800s" });
             res.status(200).send({
                 user: user.user,
                 token: token
@@ -134,6 +134,7 @@ app.post('/user', function (req, res) {
         const newPassword1 = req.body.newPassword1;
         const newPassword2 = req.body.newPassword2;
         //end ToDo
+        console.log("usre", userList);
         // validate
         try {
             (0, validateUserCreate_1.default)(username, emailAddress, newPassword1, newPassword2, userList);

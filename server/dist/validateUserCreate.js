@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function validateUserCreate(username, emailAddress, newPassword1, newPassword2, userList) {
     // const docRef = await getDocs(collection(database, "users"))
+    console.log(userList);
     // var userList = docRef.docs.map(doc => doc.data())
     if (!username) {
         throw Error("No username detected. Please enter a username");

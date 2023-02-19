@@ -118,7 +118,7 @@ app.post('/user', async function (req, res) {
 
 
     //end ToDo
-
+console.log("usre",userList)
     // validate
     try {
         validateUserCreate(username, emailAddress, newPassword1, newPassword2, userList)

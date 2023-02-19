@@ -29,7 +29,7 @@
         );
 
         if (result.data.error) {
-            console.log("heyyyy12");
+            console.log(result);
             errorMessage.set(result.data.error);
             return;
         } else {
