@@ -32,7 +32,8 @@
     }
     getAllUsers();
 </script>
-
+<br>
+<br>
 <div id="userListContainer">
     <div id="getUsersButton" class="form-control mt-6">
         <button
@@ -124,6 +125,6 @@
     }
     #userListcontainer {
         position: absolute;
-        top: 500;
+        top: 600;
     }
 </style>
